@@ -94,6 +94,9 @@ class _CarritosScreenState extends State<CarritosScreen> {
         Uri.parse('https://fakestoreapi.com/carts'),
       ).timeout(const Duration(seconds: 5));
 
+      print('STATUS CARRITOS: ${response.statusCode}');
+      print('BODY CARRITOS: ${response.body}');
+
       if (response.statusCode == 200) {
         final List data = jsonDecode(response.body);
         setState(() {
@@ -104,6 +107,7 @@ class _CarritosScreenState extends State<CarritosScreen> {
         _cargarDummy();
       }
     } catch (e) {
+      print('ERROR CARRITOS: $e');
       _cargarDummy();
     }
   }
