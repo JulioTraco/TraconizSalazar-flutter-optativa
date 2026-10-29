@@ -2,15 +2,12 @@ class ProductoCarrito {
   final int productId;
   final int quantity;
 
-  ProductoCarrito({
-    required this.productId,
-    required this.quantity,
-  });
+  ProductoCarrito({required this.productId, required this.quantity});
 
   factory ProductoCarrito.fromJson(Map<String, dynamic> json) {
     return ProductoCarrito(
-      productId: json['productId'],
-      quantity: json['quantity'],
+      productId: json['productId'] ?? 0,
+      quantity: json['quantity'] ?? 0,
     );
   }
 }
@@ -20,16 +17,12 @@ class Carrito {
   final int userId;
   final List<ProductoCarrito> products;
 
-  Carrito({
-    required this.id,
-    required this.userId,
-    required this.products,
-  });
+  Carrito({required this.id, required this.userId, required this.products});
 
   factory Carrito.fromJson(Map<String, dynamic> json) {
     return Carrito(
-      id: json['id'],
-      userId: json['userId'],
+      id: json['id'] ?? 0,
+      userId: json['userId'] ?? 0,
       products: (json['products'] as List)
           .map((p) => ProductoCarrito.fromJson(p))
           .toList(),

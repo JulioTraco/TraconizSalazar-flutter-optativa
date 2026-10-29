@@ -1,14 +1,43 @@
 import 'package:flutter/material.dart';
-import 'screens/login_screen.dart';
-import 'screens/productos_screen.dart';
-import 'screens/carritos_screen.dart';
+import 'package:http/http.dart' as http;
+import 'login/LoginScreen.dart';
+import 'products/ProductsApi.dart';
+import 'products/ProductsService.dart';
+import 'product_by_id/ProductByIdApi.dart';
+import 'product_by_id/ProductByIdService.dart';
+import 'carts/CartsApi.dart';
+import 'carts/CartsService.dart';
 
 void main() {
-  runApp(const MyApp());
+  final httpClient = http.Client();
+
+  final productsApi = ProductsApi(httpClient: httpClient);
+  final productsService = ProductsService(productsApi: productsApi);
+
+  final productByIdApi = ProductByIdApi(httpClient: httpClient);
+  final productByIdService = ProductByIdService(productByIdApi: productByIdApi);
+
+  final cartsApi = CartsApi(httpClient: httpClient);
+  final cartsService = CartsService(cartsApi: cartsApi);
+
+  runApp(MyApp(
+    productsService: productsService,
+    productByIdService: productByIdService,
+    cartsService: cartsService,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final ProductsService productsService;
+  final ProductByIdService productByIdService;
+  final CartsService cartsService;
+
+  const MyApp({
+    super.key,
+    required this.productsService,
+    required this.productByIdService,
+    required this.cartsService,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +76,11 @@ class MyApp extends StatelessWidget {
           selectedItemColor: Color(0xFF1A237E),
         ),
       ),
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/productos': (context) => const ProductosScreen(),
-        '/carritos': (context) => const CarritosScreen(),
-      },
+      home: LoginScreen(
+        productsService: productsService,
+        productByIdService: productByIdService,
+        cartsService: cartsService,
+      ),
     );
   }
 }
